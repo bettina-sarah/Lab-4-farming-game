@@ -34,12 +34,11 @@ void main(void)
 	vector <Inventaire_s> InventaireObjetsJoueur;
 	Player_s Joueur = { "Noob", 50000, InventaireObjetsJoueur};
 	vector <Inventaire_s> Marchand = { {{"Pelle", 10000, "Semer légumes"},100}, {{"Arrosoir (1L)", 5000, "Arroser cultures"},100},{{"Grain (1KG)", 6000, "Nourrir animaux"},100} };
+	int QuantiteDesire;
+	AjouterCredits(Joueur);
 
-	AjouterCredits(Joueur);
-	AjouterCredits(Joueur);
-	AjouterCredits(Joueur);
-	AjouterCredits(Joueur);
-	cout << Joueur.Credits;
+	cin >> QuantiteDesire;
+	//AchatObjet(Marchand, QuantiteDesire,)
 }
 
 void AjouterCredits(Player_s &Player) // a chaque action // OK
@@ -52,11 +51,12 @@ void AjouterCredits(Player_s &Player) // a chaque action // OK
 	}
 }
 
-void AchatObjet(Inventaire_s &marchand, int &indexvectormarchand, int &QuantitePourAcheter, Player_s &Player)
+void AchatObjet(vector <Inventaire_s> &marchand, int &indexvectormarchand, int &QuantitePourAcheter, Player_s &Player)
 {
-	if (Player.Credits > marchand.Objet.CreditCost)
+	if (Player.Credits > marchand[indexvectormarchand].Objet.CreditCost)
 	{
-		
+		Player.InventaireJoueur.push_back({ marchand[indexvectormarchand].Objet, QuantitePourAcheter });
+
 	}
 
 }
