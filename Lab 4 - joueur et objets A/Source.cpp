@@ -26,22 +26,57 @@ struct Player_s
 	vector <Inventaire_s> InventaireJoueur;
 };
 
-void AjouterCredits(Player_s &Player);
-void AchatObjet(Inventaire_s& marchand, int& indexvectormarchand, int& QuantitePourAcheter, Player_s& Player);
+void AjouterActionsetCredits(Player_s &Player);
+void AchatObjet(vector <Inventaire_s>& marchand, int& indexvectormarchand, int& QuantitePourAcheter, Player_s& Player);
 
 void main(void)
 {
 	vector <Inventaire_s> InventaireObjetsJoueur;
-	Player_s Joueur = { "Noob", 50000, InventaireObjetsJoueur};
-	vector <Inventaire_s> Marchand = { {{"Pelle", 10000, "Semer légumes"},100}, {{"Arrosoir (1L)", 5000, "Arroser cultures"},100},{{"Grain (1KG)", 6000, "Nourrir animaux"},100} };
-	int QuantiteDesire;
-	AjouterCredits(Joueur);
 
+	Player_s Joueur = { "Noob", 50000, InventaireObjetsJoueur};
+
+	vector <Inventaire_s> Marchand = { {{"Pelle", 10000, "Semer légumes"},100}, {{"Arrosoir (1L)", 5000, "Arroser cultures"},100},{{"Grain (1KG)", 6000, "Nourrir animaux"},100} };
+
+	cout << "MARCHAND: INVENTAIRE D'OBJETS\n";
+	for (int i = 0; i < 3; i++)
+	{
+		cout << Marchand[i].Objet.NomObjet << "\t" << Marchand[i].Objet.CreditCost << "\t" << Marchand[i].Objet.Capacite << "\tQuantite disponible: " << Marchand[i].QuantiteObjet << "\n";
+	}
+
+	int QuantiteDesire;
+	int IndexDesire;
+
+
+	cout << "\nQuel objet a acheter (0,1,2)";
+	cin >> IndexDesire;
+	cout << "\nCombien d'objets a acheter";
 	cin >> QuantiteDesire;
-	//AchatObjet(Marchand, QuantiteDesire,)
+	AchatObjet(Marchand, IndexDesire, QuantiteDesire, Joueur);
+	cout << "\n\nCredits joueur: " << Joueur.Credits << "\nName + quantity: ";
+	cout << Joueur.InventaireJoueur[0].Objet.NomObjet << Joueur.InventaireJoueur[0].QuantiteObjet;
+
+	cout << "\nQuel objet a acheter (0,1,2)";
+	cin >> IndexDesire;
+	cout << "\nCombien d'objets a acheter";
+	cin >> QuantiteDesire;
+	AchatObjet(Marchand, IndexDesire, QuantiteDesire, Joueur);
+	cout << "\n\nCredits joueur: " << Joueur.Credits << "\nName + quantity: ";
+	cout << Joueur.InventaireJoueur[0].Objet.NomObjet << Joueur.InventaireJoueur[0].QuantiteObjet;
+
+	cout << "\nQuel objet a acheter (0,1,2)";
+	cin >> IndexDesire;
+	cout << "\nCombien d'objets a acheter";
+	cin >> QuantiteDesire;
+	AchatObjet(Marchand, IndexDesire, QuantiteDesire, Joueur);
+	
+	cout << "\n\nCredits joueur: " << Joueur.Credits << "\nName + quantity: ";
+	cout << Joueur.InventaireJoueur[0].Objet.NomObjet << Joueur.InventaireJoueur[0].QuantiteObjet;
+
+
+
 }
 
-void AjouterCredits(Player_s &Player) // a chaque action // OK
+void AjouterActionsetCredits(Player_s &Player) // a chaque action // OK
 {
 	static int ActionsJoueur = 0;
 	ActionsJoueur++;
@@ -53,10 +88,10 @@ void AjouterCredits(Player_s &Player) // a chaque action // OK
 
 void AchatObjet(vector <Inventaire_s> &marchand, int &indexvectormarchand, int &QuantitePourAcheter, Player_s &Player)
 {
-	if (Player.Credits > marchand[indexvectormarchand].Objet.CreditCost)
+	if (Player.Credits > marchand[indexvectormarchand].Objet.CreditCost) // joueur a assez credits pour acheter
 	{
 		Player.InventaireJoueur.push_back({ marchand[indexvectormarchand].Objet, QuantitePourAcheter });
-
+		Player.Credits -= marchand[indexvectormarchand].Objet.CreditCost*QuantitePourAcheter;
 	}
-
+	AjouterActionsetCredits(Player);
 }
